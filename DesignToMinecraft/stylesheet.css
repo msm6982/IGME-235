@@ -1,0 +1,49 @@
+/*
+font source: https://www.dafont.com/dogica.font
+*/
+@font-face{
+    font-family: DogicaRegular;
+    src: url(Fonts/DogicaRegular/dogica-webfont.woff2);
+
+}
+
+/*
+font source: https://www.dafont.com/retro-computer.font
+*/
+@font-face{
+    font-family: RetroComputerRegular;
+    src: url(Fonts/RetroComputerRegular/retro_computer_personal_use-webfont.woff2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+header{
+    font-family: RetroComputerRegular;
+    color: #ffffff;
+    background-color: #686868;
+}
+
+h1{
+    font-size: 2em;
+}
+
+#introFlex{
+    padding: 0.5em 10vw;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.headerFlex{
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+}
+
+#axeSVG img{
+    width: 2em;
+    height: auto;
+}
