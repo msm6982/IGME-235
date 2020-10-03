@@ -20,15 +20,28 @@ font source: https://www.dafont.com/retro-computer.font
     padding: 0;
 }
 
-
-header{
+h1, h2{
     font-family: RetroComputerRegular;
+    font-weight: normal;
     color: #ffffff;
+}
+
+p {
+    font-family: DogicaRegular;
+    font-size: .75em;
+    color: #ffffff;
+}
+header{
     background-color: #686868;
 }
 
 h1{
     font-size: 2em;
+    text-align: left;
+}
+
+h2{
+    margin-bottom: 1em;
 }
 
 #introFlex{
@@ -39,11 +52,164 @@ h1{
 }
 
 .headerFlex{
+    display: flex;
     flex: 0 1 auto;
     flex-wrap: nowrap;
+    text-align: right;
+    align-items: center;
+}
+
+.headerFlex p{
+    font-family: RetroComputerRegular;
+    font-weight: normal;
+    font-size: 1em;
+    color: #ffffff;
+}
+
+#axeSVG {
+    vertical-align: middle;
 }
 
 #axeSVG img{
+    margin-top: 0.25em;
     width: 2em;
     height: auto;
+    transform: scaleX(-1) rotate(-90deg);
+    
+}
+
+
+#treeFlex{
+    background-color: #35363D;
+    padding: 2em 10vw;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+.treeInfo{
+    flex: 1 1 0px;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.treeText
+{
+    align-self:stretch;
+    background-color: #686868;
+    padding: 1em;
+}
+
+.treeImage{
+    align-self:stretch;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    background-image: radial-gradient( #E8FDF5, #244D3E );;
+    border-style: solid;
+    border-color: white;
+    border-width: .25em;
+}
+
+#coolTree img{
+    display: block;
+    max-width: 30vw;
+}
+
+#valleyImage img{
+    display: block;
+    width: 100%;
+}
+
+#itemInfo{
+    background-color: #35363D;
+}
+
+#woodFlexTop, #woodFlexBottom{
+    padding-left: 10vw;
+    padding-right: 10vw;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+#woodFlexTop{
+    padding-top: 2vw;
+    padding-bottom: 1vw; 
+}
+
+#woodFlexBottom{
+    padding-bottom: 2vw;
+}
+
+.topWoodInfo, .bottomWoodInfo{
+    flex: 1 1 0px;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+.topObj, .bottomObj{
+    background-color: #324E44;
+    border-style: solid;
+    border-color: white;
+    border-width: .25em;
+}
+
+.topImg, .bottomImg{
+
+    align-self:stretch;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.topImg img, .bottomImg img{
+    display: block;
+    max-width: 10vw;
+}
+
+.topObj h2, .bottomObj h2{
+    margin: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: center;
+}
+
+.topText, .bottomText{
+    align-self:stretch;
+    padding: 1em;
+    background-color: #686868;
+}
+
+footer{
+    background-image: url("Assets/treesCropped.jpg");
+    background-repeat: no-repeat;
+}
+
+#footerFlex{
+    padding: 1em 10vw;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    vertical-align: center;
+}
+
+.lastFlex{
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    text-align: right;
+    align-items: center;
+}
+
+.copyright h1{
+    text-align: right;
+}
+
+.lastFlex h1{
+    font-size: 1.5em;
 }
