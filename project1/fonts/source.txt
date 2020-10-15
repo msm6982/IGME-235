@@ -1,0 +1,5 @@
+Font Sources
+
+M PLUS 1p : https://fonts.google.com/specimen/M+PLUS+1p#standard-styles
+
+FjallaOne : https://fonts.google.com/specimen/Fjalla+One#standard-styles

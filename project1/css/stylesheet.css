@@ -1,0 +1,410 @@
+@font-face {
+    font-family: FajallaOne;
+    src: url(../fonts/FjallaOne/FjallaOne-Regular.ttf);
+}
+
+@font-face{
+    font-family: MPlusRegular;
+    src: url(../fonts/M_PLUS_1/MPLUS1p-Regular.ttf);
+}
+
+@font-face{
+    font-family: MPlusBold;
+    src: url(../fonts/M_PLUS_1/MPLUS1p-Bold.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+
+.sections{
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+#headerNav{
+    padding-top: 1rem;   
+}
+
+#projectsHeading, #resumeHeading, #aboutMeHeading{
+    padding: 1rem 0;
+}
+
+
+header{
+    background-color: #F6AA1C;
+    padding: 0 10vw;
+}
+
+h1, h2, .contentHeadings, .button{
+    text-align: center;
+    font-family: FajallaOne;
+}
+
+
+h1{
+    font-size: 11vw;   
+}
+
+
+#tagline{
+    font-size: 5.5vw;
+    padding-bottom: 2rem;
+}
+
+.contentHeadings, a{
+    text-decoration: none;
+    font-size: 7vw;
+}
+
+
+#navButtons{
+    display: grid;
+
+    padding-top: 1rem;
+    grid-template-areas: 
+    "project    aboutMe"
+    "resume     contact";
+
+    grid-template-columns: repeat(2, 30vw);
+    grid-template-rows: repeat(2, 7.5vh);
+    row-gap: .5rem;
+    column-gap: .5rem;
+
+    justify-items: stretch;
+    justify-content: center;
+}
+
+.button{
+    border: 2px solid black;
+    background-color: #28AFB0;
+    border-radius: 100px;
+    text-align: center;
+    place-self: center stretch;
+}
+
+#projectDisplay{
+    background-color: #4C9494;
+    padding: 2rem 10vw;
+}
+
+#projectWrapper{
+    display: grid;
+    grid-template-areas:     
+    "visual1"
+    "project1"
+    "visual2"     
+    "project2"
+    "visual3"
+    "project3"
+    "visual4"     
+    "project4";
+
+    grid-template-columns: 80vw;
+    grid-template-rows: repeat(8, auto);
+}
+
+.projects{
+    padding-top: 1rem;
+}
+
+.projectText{
+    font-family: "MPlusRegular";
+    font-size: 5vw;
+    padding: 0 5vw;
+}
+
+.projectTitle{
+    font-family: "MPlusBold";
+    text-align: center;
+}
+
+#project1Visual img, #project3Visual img, #project4Visual img
+{
+    max-width: 80vw;  
+}
+
+#project1Visual, #project2Visual, #project3Visual, #project4Visual
+{
+    padding-top: 1rem;
+}
+
+#project1Visual{
+    grid-area: visual1;
+}
+
+#project1Text{
+    grid-area: project1;
+}
+
+#gameLink{
+    margin-top: .75rem;
+}
+
+
+#project2Visual{
+    grid-area: visual2;
+}
+
+#project2Text{
+    grid-area: project2;
+}
+
+#project3Visual{
+    grid-area: visual3;
+}
+
+#project3Text{
+    grid-area: project3;
+}
+
+#project4Visual{
+    grid-area: visual4;
+}
+
+#project4Text{
+    grid-area: project4;
+}
+
+#project2Visual iframe{
+    width: 100%    !important;
+    height: auto   !important;
+}
+
+#personalInfo{
+    background-color: #F6AA1C;
+    padding: 0 10vw;
+    padding-bottom: 1rem;
+}
+
+#PersonalGrid{
+    display: grid;
+    grid-template-areas:
+    "personalImage"
+    "personalText";
+
+    grid-template-columns: 80vw;
+    grid-template-rows: auto auto;
+}
+
+#infoIMG{
+    grid-area: personalImage;
+}
+
+#infoText{
+    grid-area: personalText;
+    font-family: "MPlusRegular";
+    font-size: 5vw;
+    padding: 0 5vw;
+}
+
+#infoIMG img{
+    width: 80vw;
+}
+
+#resumeSection{
+    background-color: #4C9494;
+    padding: 0 10vw;
+    
+}
+
+#resumeGrid{
+    display: grid;
+    grid-template-areas: 
+    "resume"
+    "downloadLink";
+    grid-template-columns: 80vw;
+    grid-template-rows: auto auto;
+    justify-content: center;
+    justify-items: center;
+}
+
+#resumeHeading{
+    padding-bottom: 1rem;
+}
+
+#resume{
+    grid-area: resume;
+}
+
+#resumeLink{
+    grid-area: downloadLink;
+    margin: .5rem 1rem;
+}
+
+#footerContent{
+    background-color: #F6AA1C;
+    padding: 0 10vw;
+}
+
+#contactInfo{
+    display: grid;
+    grid-template-areas: 
+    "button" 
+    "phone"
+    "email";
+    grid-template-columns: 80vw;
+    grid-template-rows: repeat(3, auto);
+    justify-content: center;
+    justify-items: center;
+    font-size: 5.5vw;
+}
+
+#contactHeading{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#linkedinButton{
+    grid-area: button;
+    margin: 0 25vw;
+}
+
+#phone{
+    grid-area: phone;
+}
+
+#email{
+    grid-area: email;
+}
+
+@media screen and (min-width: 450px)
+{
+
+    h1{
+        font-size: 8vw;
+    }
+    
+    header{
+        padding: 0 20vw;
+        padding-top: 5rem;
+    }
+    
+    #tagline, .contentHeadings{
+        font-size: 3vw;
+    }
+
+    a{
+        font-size: 2vw;
+    }
+
+    #navButtons{
+        grid-template-areas: 
+        "project    aboutMe     resume     contact";
+        grid-template-columns: repeat(4, 12.5vw);
+        grid-template-rows: 10vh;
+        justify-items: center;
+    }
+
+    #projectDisplay{
+        padding: 2.5rem 20vw;
+        padding-bottom: 5rem;
+    }
+
+    #projectHeading{
+        padding: 2.5rem 20vw;
+        padding-bottom: 5rem;
+    }
+
+    #projectWrapper{
+        display: grid;
+        grid-template-areas: 
+        "project1   visual1"
+        "visual2    project2"
+        "project3   visual3"
+        "visual4    project4";
+    
+        grid-template-columns: 30vw 30vw;
+        grid-template-rows: repeat(4, 130px);
+        row-gap: 4rem;
+        column-gap: .5rem;
+        justify-content: center;
+        align-items: center;
+    }
+    #project1Visual img, #project3Visual img, #project4Visual img
+    {
+        max-width: 25vw;
+        
+    }
+
+    #project1Visual, #project2Visual, #project3Visual, #project4Visual{
+        display:flex;
+        justify-content: center;
+        align-items:center;  
+    }
+
+    .projectText{
+        font-family: "MPlusRegular";
+        font-size: 1vw;
+        padding: 0;
+    }
+
+    #personalInfo{
+        padding: 2.5rem 20vw;
+    }
+    
+
+    #aboutMeHeading{
+        padding-top: 2.5rem;
+        padding-bottom: 5rem;
+    }
+
+    #PersonalGrid{
+        grid-template-areas:
+        "personalImage personalText";
+    
+        grid-template-columns: 40vw 40vw;
+        grid-template-rows: auto;
+        justify-content: center;
+    }
+
+    #infoText{
+        grid-area: personalText;
+        font-size: 2.5vw;
+    }
+    
+    #infoIMG img{
+        width: 40vw;
+    }
+
+    #resumeSection{
+        padding: 2.5rem 20vw;
+    }
+
+    #resume img{
+        width: 60vw;
+    }
+
+    #resumeLink{
+        align-self: stretch;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #footerContent{
+        padding: 2.5rem 10vw;
+        padding-bottom: 5rem;
+    }
+
+    #contactHeading{
+        padding: 2.5rem 20vw;
+        padding-bottom: 5rem;
+    }
+    
+    #linkedinButton{
+        margin: 0;
+    }
+
+    #contactInfo{
+        grid-template-areas: 
+        "button phone email";
+        grid-template-columns: repeat(3,30vw);
+        grid-template-rows: auto;
+        justify-content: center;
+        justify-items: center;
+        font-size: 2vw;
+    }
+}
