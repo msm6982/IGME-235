@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Hello-4</title>
+  <script>
+    "use strict";
+    // 1) Common JS Objects
+    let colors = ["red", "green", "blue"]; // Array literal
+    let person = { name: "Fred", age: 20 };   // Object literal
+    let month = new Date().getMonth();
+    let age = Math.round(20.999);
+    let age2 = Math.floor(20.999);
+
+    // Add to the color array
+    colors.push("yellow");
+    // Print the last index of the array
+    console.log(colors[colors.length - 1]);
+    // Print the entire array
+    for (let index = 0; index < colors.length; index++) {
+      console.log(colors[index]);
+
+    }
+    // Add school propety to person called RIT and print it
+    person.school = "RIT";
+    console.log(person.school);
+    // Get the amount of seconds since 1970 and print it
+    let today = new Date();
+    let notToday = new Date("01/01/1970");
+    let timeBetween = ((today.getTime() - notToday.getTime()) / (1000));
+    console.log(timeBetween);
+    // Print PI
+    console.log(Math.PI);
+    // Print an aboslute value
+    console.log(Math.abs(-999));
+    // Print an all caps Hello
+    let allCaps = "Hello";
+    console.log(allCaps.toUpperCase());
+
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>

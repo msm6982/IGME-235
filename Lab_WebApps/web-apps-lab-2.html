@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>DOM-3</title>
+    <style>
+        body {
+            border: 1px solid gray;
+        }
+
+        p b {
+            transform: rotate(20deg)
+        }
+    </style>
+</head>
+
+<body>
+    <h1>My Page</h1>
+    <h2>Info</h2>
+    <h2>Pictures</h2>
+    <h2>More Info</h2>
+    <p>Blah <b>Blah</b> Blah</p>
+    <p>Blah <b>Blah</b> Blah</p>
+    <p id="lastParagraph">Blah <b>Blah</b> Blah</p>
+    <footer>Copyright &copy; <b>20XX</b></footer>
+    <script>
+        "use strict";
+        let h1 = document.querySelector("h1");
+        let allH2 = document.querySelectorAll("h2");
+
+        let firstH2 = allH2[0];
+        let secondH2 = allH2[1];
+        let thirdH2 = allH2[2];
+
+        // Replace H1 and H2 text
+        h1.innerHTML = "My UFO Page";
+        firstH2.innerHTML = "My UFO Info";
+        secondH2.innerHTML = "My UFO Pictures"
+        thirdH2.innerHTML = "";
+
+        // Style the body
+        let body = document.body;
+        body.style.fontFamily = "sans-serif";
+        body.style.color = "#a13d2d";
+
+        // Get all p eleements
+        let p = document.querySelectorAll("p");
+
+        let firstP = p[0];
+        let secondP = p[1];
+        let thirdP = p[2];
+
+        // Replace the First p with different text and a link
+        let linkText = "http://www.nuforc.org";
+        let link = linkText.link("http://www.nuforc.org");
+        firstP.innerHTML = "Report your UFO sightings here: " + link;
+        // Style 1st p
+        firstP.style.color = "green";
+        firstP.style.fontWeight = "bold";
+        firstP.style.fontSize = "2em";
+        firstP.style.textTransform = "uppercase"
+        firstP.style.textShadow = "3px 2px #A44";
+
+
+        // Omit second p
+        secondP.innerHTML = "";
+
+        // Replace 3rd p with img
+        // Image Source: https://www.history.com/topics/paranormal/ufo-sightings-new-jersey-ufo-photos-video
+        thirdP.innerHTML = "<img src='https://www.history.com/.image/t_share/MTU3ODc3NjU1Mzk4ODUxOTEz/ufo-sightings-new-jersey-ufo-photos.jpg'>";
+
+        // Change the footer to be a copyright with current year
+        let footer = document.querySelector("footer");
+        let todaysYear = new Date();
+        footer.innerHTML = "&copy " + todaysYear.getFullYear() + " Miles Michell";
+    </script>
+</body>
+
+</html>
