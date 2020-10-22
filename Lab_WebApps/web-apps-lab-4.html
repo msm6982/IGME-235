@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Web Apps-3</title>
+    <title>Web Apps-4</title>
     <style>
         body {
             border: 1px solid gray;
@@ -41,6 +41,19 @@
         let foodList = document.getElementById("foodsList");
         let linkList = document.getElementById("linksList");
 
+        function createList(listElement, array = ["Puppydogs", "Butterflies", "Lollipops"]) {
+            for (let a of array) {
+                let li = document.createElement("li");
+                li.innerHTML = a;
+                listElement.appendChild(li);
+            }
+        }
+
+        createList(animalList, animals);
+        createList(foodList, foods);
+        createList(linkList);
+
+        /*
         // Add items to animals ordered list via for loop
         for (let index = 0; index < animals.length; index++)
         {
@@ -75,6 +88,7 @@
                 linkList.appendChild(li);
             }
         }
+        */
     </script>
 </body>
 
