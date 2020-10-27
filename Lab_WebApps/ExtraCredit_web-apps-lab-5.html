@@ -45,33 +45,55 @@
     <script>
         let radioButtons = document.querySelectorAll("input[name='colorGroup']");
 
-        function radioClicked(e) 
-        {
+        function radioClicked(e) {
             document.querySelector('#info').innerHTML = 'You have selected "' + e.target.value + '"!';
         }
 
-        let selectedColor;
-        function submitColor()
-        {
-            for(let b of radioButtons)
-            {
-                if(b.checked)
-                {
-                    selectedColor = b.value
+        const selectedColor = [];
+        let colorSentance;
+        function submitColor() {
+            for (let b of radioButtons) {
+                if (b.checked) {
+                    selectedColor.push(b.value);
+                    
                     break;
                 }
             }
-            document.querySelector("legend").style.color = selectedColor
-            document.querySelector('#info').innerHTML = 'Your FINAL CHOICE is "' + selectedColor + '"!';
+            if (selectedColor.lenght > 0) {
+                multicolorSentance(selectedColor);
+                console.log(colorSentance);
+
+            }
+            document.querySelector('#info').innerHTML = 'Your FINAL CHOICE is ' + colorSentance + '!';
+
+            //document.querySelector("legend").style.color = selectedColor
+
         }
 
-        for (let b of radioButtons)
-        {
+        function multicolorSentance(colorArray) {
+            switch (colorArray.lenght) {
+                case 1:
+                    colorSentance = colorArray[0];
+                    break;
+                case 2:
+                    colorSentance = colorArray[0] + ' and ' + colorArray[1];
+                    break;
+                default:
+                    for (let i = 0; index < colorArray.length; i++) {
+                        if (i == (colorArray.lenght - 1)) {
+                            colorSentance += ', and ' + colorArray[i];
+                        }
+                        colorSentance += (', ' + colorArray[i]);
+                    }
+                    break;
+            }
+        }
+        for (let b of radioButtons) {
             b.addEventListener("click", radioClicked);
         }
 
         document.querySelector("#colorButton").addEventListener("click", submitColor);
-        
+
     </script>
 </body>
 
