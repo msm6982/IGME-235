@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Objects-4</title>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        // NEW ES6 Object Literal Feature
+
+        // 1- property value "shortcuts"
+
+        // 1A - old way
+        function makeCar1(make, model, cylinders) {
+            return {
+                make: make,
+                model: model,
+                cylinders: cylinders
+            };
+        }
+
+        // 1B - new ES6 way works as long as the property name and value use the same identifier
+        function makeCar2(make, model, cylinders) {
+            return {
+                make,
+                model,
+                cylinders
+            };
+        }
+
+        console.log(makeCar1("Subaru", "Brat", 4));
+        console.log(makeCar2("Plymouth", "Champ", 4));
+
+
+        // 2 - new and more concise way to specify object methods
+
+        // 2A - old way
+        let car1 = {
+            speed: 0,
+            speedUp: function () {
+                this.speed++;
+            },
+            stop: function () {
+                this.speed = 0;
+            }
+        };
+
+
+        // 2B - new ES6 way
+        let car2 = {
+            speed: 0,
+            speedUp() {
+                this.speed++;
+            },
+            stop() {
+                this.speed = 0;
+            }
+        };
+
+        let car1 = { make: "Toyota" };
+        let car2 = car1; // car1 and car2 are now pointing at the same object!
+        car1.make = "Jeep"; // changes made to car1 effect both variables
+
+        console.log(car1.make); // Jeep
+        console.log(car2.make); // Jeep
+
+        let car3 = car1; // now 3 variables are pointing at the same object!
+        car3.make = "Yugo";
+
+        console.log(car1.make); // Yugo
+        console.log(car2.make); // Yugo
+        console.log(car3.make); // Yugo
+    </script>
+</body>
+
+</html>
