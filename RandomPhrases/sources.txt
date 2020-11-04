@@ -1,0 +1,6 @@
+Fonts:
+
+Cormorant: https://fonts.google.com/specimen/Cormorant
+Darkfather: https://www.dafont.com/darkfather.font
+
+Image: Mario Party 8

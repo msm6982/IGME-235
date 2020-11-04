@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Web Apps-6 (3)</title>
+    <style>
+        body {
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>My Favorites</h1>
+    <h2>My Favorite Animals</h2>
+
+    <ol id="animalList">
+
+    </ol>
+
+    <h2>My Favorite Foods</h2>
+
+    <ol id="foodsList">
+
+    </ol>
+
+    <h2>My Favorite Links</h2>
+
+    <ol id="linksList">
+
+    </ol>
+
+    <script>
+        "use strict";
+        let animals = ["Seals", "Owls", "Hedgehogs", "Ball pythons", "Alligators"];
+        let foods = ["Sushi", "Hamburgers", "Pasta", "Oyster Po' boy", "Pineapple"];
+
+        // Get refrences 
+        let animalList = document.getElementById("animalList");
+        let foodList = document.getElementById("foodsList");
+        let linkList = document.getElementById("linksList");
+
+        // Add items to animals ordered list via for loop
+        for (let index = 0; index < animals.length; index++)
+        {
+            let li = document.createElement("li");
+            li.innerHTML = animals[index];
+            animalList.appendChild(li);
+        }
+
+        // Add items to food ordered list via for of loop
+        for (let f of foods) {
+            let li = document.createElement("li");
+            li.innerHTML = f;
+            foodList.appendChild(li);
+        }
+
+        // Optional - can you figure out how to pull both the key AND the value
+        // from the `links` object literal?
+        let links = {
+            "RIT": "http://www.rit.edu",
+            "RWAG": "https://www.facebook.com/RWAGclub",
+            "New Media Club": "http://newmediaclub.cias.rit.edu"
+        }
+
+        // Add items to link ordered list via for in loop
+        for (let key in links) {
+            if (links.hasOwnProperty(key)) {
+                let li = document.createElement("li");
+
+                let linkText = key;
+                let currentLink = linkText.link(links[key]);
+                li.innerHTML = currentLink;
+                linkList.appendChild(li);
+            }
+        }
+    </script>
+</body>
+
+</html>
