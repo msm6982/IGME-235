@@ -85,18 +85,15 @@
 	</section>
 	<script>
 		
-		let IMGurl = document.getElementById('placeholder').src;
-		let buttonItems =  document.querySelectorAll("span");
-
 		function clickButtons(e)
 		{
-			IMGurl = "images/" + e.dataset.image;
+			document.getElementById('placeholder').src = "images/" + e.path[0].dataset.image;
 		}
 
-		for (let b of buttonItems)
-        {
-            b.addEventListener("click", clickButtons);
-        }
+		document.querySelectorAll("span").forEach(button => {
+			button.addEventListener('click', clickButtons);
+		}); 
+
 
 		/*
 		The name of the image is stored in the data-image (custom data) attribute of each
