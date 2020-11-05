@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waluigi Phrases</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+</head>
+
+<body>
+    <main>
+        <h1>Waluigi Phrase Generator</h1>
+        <h2>Miles Michell</h2>
+        <div id="backgroundIMG">
+
+            <div id="phraseButton">
+                <p>What other thoughts does that beautiful mind hold?</p>
+            </div>
+            <div id="generatePosition">
+                <p id="generatedPhrase"></p>
+            </div>
+
+        </div>
+    </main>
+    <script>
+        "use strict";
+        // Array of possible random Waluigi Phrases
+        let randomPhrase = [
+            "''Democracy Dies in Darkness.''",
+            "''WAAAHH!!''",
+            "''Waluigi jokes are not funny.''",
+            "''You might be gettin' better, but nobody cheats better than me!''",
+            "'''We’re both going to regret this.''"];
+
+
+        function displayQuote() {
+            // Get a random in between 0 and the length of array minus 1
+            let randomIndex = Math.floor(Math.random() * Math.floor(randomPhrase.length - 1));
+            // While statement to ensure the same qoute isn't displayed twice
+            while (randomPhrase[randomIndex] == document.querySelector('#generatedPhrase').innerHTML) {
+                randomIndex = Math.floor(Math.random() * Math.floor(randomPhrase.length - 1));
+            }
+            // Display a random phrase based on the index that was generated
+            document.querySelector('#generatedPhrase').innerHTML = randomPhrase[randomIndex];
+        }
+
+        // Display a phrase when the phrase button is clicked
+        document.querySelector("#phraseButton").addEventListener("click", displayQuote);
+        // Display a phrase when the page loads
+        window.addEventListener('load', displayQuote);
+
+    </script>
+</body>
+
+</html>

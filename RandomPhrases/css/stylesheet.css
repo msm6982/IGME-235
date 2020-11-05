@@ -1,0 +1,150 @@
+@font-face {
+    font-family: Cormorant;
+    src: url(../fonts/Cormorant-Regular.ttf);
+}
+
+@font-face{
+    font-family: Darkfather;
+    src: url(../fonts/Darkfather.ttf);
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+
+}
+
+main{
+    padding: 0 10vw;
+    padding-top: 1rem;
+    background-image: radial-gradient(yellow, #540674 );
+}
+
+h1,h2{
+    text-align: center;
+    font-family: Cormorant;
+    color: white;
+}
+
+
+#backgroundIMG{
+    background-image: url(../images/waluigi_rose.png);
+    width: 80vw;
+    height: 550px;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;  
+    text-align: center;
+}
+
+#phraseButton{
+    position: absolute;
+    font-family: Cormorant;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red; 
+    cursor: pointer;
+    font-size: 1.5rem;
+    top: 2.5em;
+    left: 50%;
+    width: 80vw;
+    transform: translate(-50%,-50%);
+    border: none;
+    background-color: purple;
+    opacity: 0.5;
+    border-radius: 15px;
+}
+
+#phraseButton:hover{
+    text-shadow: -1px 0 #540674 , 0 1px #540674 , 1px 0 #540674 , 0 -1px #540674;
+    opacity: 0.75;
+}
+
+#phraseButton:active{
+    text-shadow: -1px 0 yellow, 0 1px yellow, 1px 0 yellow, 0 -1px yellow;
+}
+
+#generatePosition{
+    position: absolute;
+    bottom: 1em;
+    font-size: 1.5rem;
+    font-family: Darkfather;
+    color: white;
+    text-align: left;
+    left: 50%;
+    width: 70vw;
+    transform: translate(-50%,-50%);
+}
+
+@media screen and (min-width: 450px)
+{
+    h1,h2{
+        font-size: 2.5rem;
+    }
+
+    #phraseButton{
+        width: 60vw;
+        font-size: 1.75rem;
+    }
+
+    #generatePosition{
+        width: 60vw;
+        font-size: 1.75rem;
+        bottom: .5em;
+    }
+}
+
+@media screen and (min-width: 700px)
+{
+
+    #phraseButton{
+        width: 45vw;
+        font-size: 1.75rem;
+    }
+
+    #generatePosition{
+        width: 45vw;
+        font-size: 1.75rem;
+    }
+}
+
+@media screen and (min-width: 1000px)
+{
+    #phraseButton{
+        width: 35vw;
+        font-size: 1.75rem;
+    }
+
+    #generatePosition{
+        width: 35vw;
+        font-size: 1.75rem;
+    }
+}
+
+@media screen and (min-width: 1200px)
+{
+    #phraseButton{
+        width: 25vw;
+        font-size: 1.75rem;
+    }
+
+    #generatePosition{
+        width: 25vw;
+        font-size: 1.75rem;
+    }
+}
+
+@media screen and (min-width: 1500px)
+{
+    #phraseButton{
+        width: 15vw;
+        font-size: 1.75rem;
+    }
+
+    #generatePosition{
+        width: 15vw;
+        font-size: 1.75rem;
+    }
+}
