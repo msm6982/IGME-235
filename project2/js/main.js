@@ -1,21 +1,67 @@
 "use strict";
-// 1
-window.onload = SetUPStuff;
+// 
 
+// Constant URLS
 const PokiAPI_URL = "https://pokeapi.co/api/v2/";
 const PokiParkArea_URL = PokiAPI_URL + "pal-park-area/";
-const PokiTeam_URL = PokiAPI_URL + "pokemon/";
+const Pokemon_URL = PokiAPI_URL + "pokemon/";
 const PokiSpecies_URL = PokiAPI_URL + "pokemon-species/";
 const encounterSprite_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
+const teamKey = "msm6982-team";
+
 let currentTeam = [];
+let teamDIV = [];
 let areaNums = []
 let encounterNums = []
 let buttons = [];
 
 let loadedSprite = "";
 
-function SetUPStuff() {
+// Load areas and add event listeners
+function SetupFunctions() {
     GetAreas();
+    document.querySelector("#searchButton button").addEventListener('click', ManualSearch);
+    LoadSavedData();
+
+}
+
+window.onload = SetupFunctions;
+
+
+function LoadSavedData() {
+    const searchTerm = document.querySelector("#searchTerm");
+    const prefix = "msm6982-";
+    const searchKey = prefix + "search";
+
+
+    const savedSearch = localStorage.getItem(searchKey);
+    const savedTeam = localStorage.getItem(teamKey);
+
+    if (savedSearch) {
+        document.querySelector("#searchTerm").value = savedSearch;
+    }
+    else {
+        document.querySelector("#searchTerm").value = "Pikachu";
+    }
+
+    if (savedTeam) {
+        currentTeam = savedTeam;
+    }
+    else {
+        document.querySelector("#teamInfo").innerHTML = "<p>Catch a Pokémon!<p/>"
+    }
+
+    searchTerm.onchange = e => { localStorage.setItem(searchKey, e.target.value); };
+    /*
+    currentTeam.onchange = e => {
+        localStorage.setItem(teamKey, currentTeam);
+        
+        currentTeam.forEach(pokemon => {
+            GetTeamMember(pokemon);
+        });
+        
+    }
+    */
 }
 
 // Get the areas the user can choose from using the pal park area endpoint
@@ -27,11 +73,16 @@ function GetAreas(e) {
     xhr.send();
 }
 
-function GetTeam(e) {
-
+// Get the current team based on the 
+function GetTeamMember(e) {
+    let xhr = new XMLHttpRequest();
+    let url = Pokemon_URL + e + "/";
+    xhr.onload = LoadTeamPokemon;
+    xhr.open("GET", url);
+    xhr.send()
 }
 
-// Get the areas the user can choose from using an area form pal park area endpoint
+// Get the pokemons the user can choose from using an area form pal park area endpoint
 function GetEncounters(e) {
     let xhr = new XMLHttpRequest();
     let buttonId = parseInt(e.path[1].id);
@@ -43,6 +94,16 @@ function GetEncounters(e) {
     xhr.open("GET", url);
     xhr.send();
 }
+
+function ManualSearch(e) {
+
+
+}
+
+function ManualSearchData(e) {
+
+}
+
 
 // Load three areas the user can click to encounter pokemon from that area
 function AreasLoaded(e) {
@@ -69,17 +130,17 @@ function AreasLoaded(e) {
     }
 
     // itteration index for the for loop
-    let addId = 0;  
+    let addId = 0;
     // get all the choices and divs
     let choiceContent = document.querySelectorAll(".choiceDIV");
     let choiceButton = document.querySelectorAll(".choiceButton");
     // change the slection heading
-    document.querySelector("#functionHeading").innerHTML = "<h2>Pokemon are in these areas!</h2>";
+    document.querySelector("#functionHeading").innerHTML = "<h2>Pokémon are in these areas!</h2>";
     // for each saved area assign data about them in the Search and catch div, also save an index to those area for encounters
     displayAreas.forEach(area => {
 
         let areaName = obj.results[area].name;
-        let capsName = areaName.charAt(0).toUpperCase() + areaName.slice(1);
+        let capsName = CapFirstLetter(areaName);
 
         choiceContent[addId].innerHTML = "<p>" + capsName + "</p>";
 
@@ -87,12 +148,13 @@ function AreasLoaded(e) {
 
         areaNums.push((area + 1));
 
-        addId+=1;
+        addId += 1;
     });
     // 4
     // Add the get encouter event lisnter for users to encount pokemon in a slected area
     document.querySelectorAll(".choiceButton").forEach(button => {
         button.removeEventListener('click', GetAreas);
+        button.removeEventListener('click', AddPokemonToTeam);
         button.addEventListener('click', GetEncounters);
     });
 
@@ -105,10 +167,10 @@ function EncounterLoad(e) {
 
     // Get the name of the area
     let objName = obj.name;
-    let capsName = objName.charAt(0).toUpperCase() + objName.slice(1);
+    let capsName = CapFirstLetter(objName);
 
     // Change function heading to show the selected area
-    let encounteredHeading = "<h2>Wild Pokemon appeared in the " + capsName + "!</h2>";
+    let encounteredHeading = "<h2>Wild Pokémon appeared in the " + capsName + "!</h2>";
     document.querySelector("#functionHeading").innerHTML = encounteredHeading;
 
     // Get all the possible encounts
@@ -126,7 +188,7 @@ function EncounterLoad(e) {
     }
 
     // Index itteration for the for each loop
-    let addId = 0; 
+    let addId = 0;
     // Getting all the content divs to add information to each of them 
     let choiceSprite = document.querySelectorAll(".choiceMedia");
     let choiceContent = document.querySelectorAll(".choiceDIV");
@@ -135,7 +197,7 @@ function EncounterLoad(e) {
     displayPokemon.forEach(area => {
 
         let pokemonName = obj.pokemon_encounters[area].pokemon_species.name;
-        let capsName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+        let capsName = CapFirstLetter(pokemonName);
         let allContent = "<span><p>" + capsName + "</p></span>";
 
         choiceContent[addId].innerHTML = allContent;
@@ -143,29 +205,35 @@ function EncounterLoad(e) {
         let spriteUrl = encounterSprite_URL + dexIndex + ".gif";
 
         console.log(spriteUrl);
-        choiceSprite[addId].innerHTML = "<img src='" + spriteUrl + "' alt='" + capsName +" spirte'>";
+        choiceSprite[addId].innerHTML = "<img src='" + spriteUrl + "' alt='" + capsName + " spirte'>";
+        choiceButton[addId].setAttribute("value", dexIndex);
         choiceButton[addId].innerHTML = "<button>Catch!</button>";
 
-        addId+=1;
+        addId += 1;
     });
 
     document.querySelectorAll(".choiceButton").forEach(button => {
         button.removeEventListener('click', GetEncounters);
         button.addEventListener('click', GetAreas);
+        button.addEventListener('click', AddPokemonToTeam);
     });
 }
 
-function GetLastOfUrl(url)
-{
+function GetLastOfUrl(url) {
     url = url.split('/');
     url.pop();
     url = url.pop();
     return url;
 }
 
+function AddPokemonToTeam(e) {
+    let pokeIndex = e.currentTarget.attributes[2].value;
+    currentTeam.push(pokeIndex);
+    GetTeamMember(currentTeam[currentTeam.length - 1]);
+}
+
 // Helper method for clearing div content so new stuff can load
-function clearChoices()
-{
+function clearChoices() {
     let clearMedia = document.querySelectorAll(".choiceMedia");
     let clearContent = document.querySelectorAll(".choiceDIV");
     let clearButton = document.querySelectorAll(".choiceButton");
@@ -181,4 +249,34 @@ function clearChoices()
     clearMedia.forEach(media => {
         media.innerHTML = "";
     });
+}
+
+function LoadTeamPokemon(e) {
+    let obj = JSON.parse(e.target.responseText);
+    let objName = obj.name;
+    let pokemonName = CapFirstLetter(objName);
+    let  randomAbility = Math.floor((Math.random() * obj.abilities.length));
+    let pokemonAbility = obj.abilities[randomAbility].ability.name;
+    let pokemonTypes = "";
+    if(obj.types.length == 2)
+    {
+        let type1 = CapFirstLetter(obj.types[0].type.name);
+        let type2 = CapFirstLetter(obj.types[1].type.name);
+        pokemonTypes = type1 + " - " + type2;
+        
+    }
+    else
+    {
+        pokemonTypes = CapFirstLetter(obj.types[0].type.name);
+    }
+    let pokemonWeight = obj.weight;
+    console.log(pokemonAbility);
+    console.log(pokemonTypes);
+}
+
+//
+function CapFirstLetter(e)
+{
+    let capWord = e.charAt(0).toUpperCase() + e.slice(1);
+    return capWord;
 }
