@@ -85,7 +85,7 @@ function GetTeamMember(e) {
 // Get the pokemons the user can choose from using an area form pal park area endpoint
 function GetEncounters(e) {
     let xhr = new XMLHttpRequest();
-    let buttonId = parseInt(e.path[1].id);
+    let buttonId = parseInt(this.attributes[1].nodeValue);
     let correctArea = areaNums[buttonId]
 
     let url = PokiParkArea_URL + correctArea + "/";
@@ -204,7 +204,6 @@ function EncounterLoad(e) {
         let dexIndex = GetLastOfUrl(obj.pokemon_encounters[area].pokemon_species.url);
         let spriteUrl = encounterSprite_URL + dexIndex + ".gif";
 
-        console.log(spriteUrl);
         choiceSprite[addId].innerHTML = "<img src='" + spriteUrl + "' alt='" + capsName + " spirte'>";
         choiceButton[addId].setAttribute("value", dexIndex);
         choiceButton[addId].innerHTML = "<button>Catch!</button>";
@@ -251,12 +250,37 @@ function clearChoices() {
     });
 }
 
+// Get a pokemons name, dex mumber, weight, animated sprite, and an ability
+// This infomation is parsed so that it's displayed in a neat presentable mannor 
 function LoadTeamPokemon(e) {
     let obj = JSON.parse(e.target.responseText);
     let objName = obj.name;
     let pokemonName = CapFirstLetter(objName);
+    let pokemonWeight = obj.weight;
     let  randomAbility = Math.floor((Math.random() * obj.abilities.length));
+    let pokemonID = obj.id;
+    let spriteDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
+    console.log(spriteDisplay);
+    if(pokemonID < 100){
+        pokemonID = "0" + pokemonID; 
+        if(pokemonID < 10)
+        {
+            pokemonID = "0" + pokemonID;
+        }
+    }
+    pokemonID = "#" + pokemonID;
+    let nameID = pokemonID + " " + pokemonName;
+    
     let pokemonAbility = obj.abilities[randomAbility].ability.name;
+    pokemonAbility = pokemonAbility.split('-');
+    if(pokemonAbility.length == 2)
+    {
+        pokemonAbility = CapFirstLetter(pokemonAbility[0]) + " " + CapFirstLetter(pokemonAbility[1]);
+    }
+    else
+    {
+        pokemonAbility = CapFirstLetter(pokemonAbility[0]);
+    }
     let pokemonTypes = "";
     if(obj.types.length == 2)
     {
@@ -269,12 +293,15 @@ function LoadTeamPokemon(e) {
     {
         pokemonTypes = CapFirstLetter(obj.types[0].type.name);
     }
-    let pokemonWeight = obj.weight;
-    console.log(pokemonAbility);
+    
+    console.log(nameID);
     console.log(pokemonTypes);
+    console.log(pokemonAbility);
+    console.log(pokemonWeight);
+    
 }
 
-//
+// Help method that capitalizes
 function CapFirstLetter(e)
 {
     let capWord = e.charAt(0).toUpperCase() + e.slice(1);
