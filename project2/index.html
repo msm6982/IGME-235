@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 2 - Pokécatchathon</title>
+    <link rel="stylesheet" type="text/css" href="styles/stylesheet.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="js/main.js"></script>
-    <link rel="styles" href="styles/stylesheet.css">
+    
 </head>
 
 <body>
@@ -29,7 +30,7 @@
             <div class="choiceDIV">
 
             </div>
-            <div class="choiceButton" id="0">
+            <div class="choiceButton controls" id="0">
 
             </div>
         </div>
@@ -40,7 +41,7 @@
             <div class="choiceDIV">
 
             </div>
-            <div class="choiceButton" id="1">
+            <div class="choiceButton controls" id="1">
 
             </div>
         </div>
@@ -51,7 +52,7 @@
             <div class="choiceDIV">
 
             </div>
-            <div class="choiceButton" id="2">
+            <div class="choiceButton controls" id="2">
 
             </div>
         </div>
@@ -59,7 +60,7 @@
     </div>
 
     <div id="manualSearch">
-        <div id="searchButton">
+        <div class="controls" id="searchButton">
             <h2>Search for a Specific Pokémon: <input type="text" id='searchTerm' size="20" maxlength="20"></h2>
             <button type="button" id="search">Search!</button>
         </div>
@@ -74,7 +75,7 @@
 
         </div>
 
-        <div class="placeholder" id="catchButton">
+        <div class="controls" id="catchButton">
 
 
 
@@ -85,10 +86,13 @@
     <div id="teamDisplay">
         <h2>Current Team</h2>
         <div id="teamStatus">
-            
+
         </div>
         <div id="teamInfo">
 
+        </div>
+        <div class="controls">
+            <button id="releaseButton">Release Team</button>
         </div>
     </div>
 

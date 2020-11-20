@@ -1,5 +1,4 @@
 "use strict";
-// 
 
 // Constant URLS
 const PokiAPI_URL = "https://pokeapi.co/api/v2/";
@@ -11,25 +10,23 @@ const teamKey = "msm6982-team";
 
 let currentTeam = [];
 let currentTeamHTML = [];
-let teamDIV = [];
-let areaNums = []
-let encounterNums = []
-let buttons = [];
+let areaNums = [];
 
-let loadedSprite = "";
+let caughtPokemon = "";
 
 // Load areas and add event listeners
-function SetupFunctions() {
-    GetAreas();
-    document.querySelector("#searchButton button").addEventListener('click', ManualSearch);
-    LoadSavedData();
+function setupFunctions() {
+    getAreas();
+    document.querySelector("#searchButton button").addEventListener('click', manualSearch);
+    document.querySelector("#teamDisplay button").addEventListener('click', releaseTeam);
+    loadSavedData();
 
 }
 
-window.onload = SetupFunctions;
+window.onload = setupFunctions;
 
 // Load the locally saved search term 
-function LoadSavedData() {
+function loadSavedData() {
     const searchTerm = document.querySelector("#searchTerm");
     const prefix = "msm6982-";
     const searchKey = prefix + "search";
@@ -45,6 +42,7 @@ function LoadSavedData() {
         document.querySelector("#searchTerm").value = "Pikachu";
     }
 
+    // Not yet implemented will always go to else
     if (savedTeam) {
         currentTeam = savedTeam;
     }
@@ -66,59 +64,55 @@ function LoadSavedData() {
 }
 
 // Get the areas the user can choose from using the pal park area endpoint
-function GetAreas(e) {
+function getAreas(e) {
     let xhr = new XMLHttpRequest();
     let url = PokiParkArea_URL;
-    xhr.onload = AreasLoaded;
+    xhr.onload = areasLoaded;
     xhr.open("GET", url);
     xhr.send();
 }
 
 // Get the current team based on the 
-function GetTeamMember(e) {
+function getTeamMember(e) {
     let xhr = new XMLHttpRequest();
     let url = Pokemon_URL + e + "/";
-    xhr.onload = LoadTeamPokemon;
+    xhr.onload = loadTeamPokemon;
     xhr.open("GET", url);
     xhr.send();
 }
 
 // Get the pokemons the user can choose from using an area form pal park area endpoint
-function GetEncounters(e) {
+function getEncounters(e) {
     let xhr = new XMLHttpRequest();
     let buttonId = parseInt(this.attributes[1].nodeValue);
     let correctArea = areaNums[buttonId]
 
     let url = PokiParkArea_URL + correctArea + "/";
 
-    xhr.onload = EncounterLoad;
+    xhr.onload = encounterLoad;
     xhr.open("GET", url);
     xhr.send();
 }
 
-function ManualSearch(e) {
+// Get the pokemon the user searched for
+function manualSearch(e) {
     let term = document.querySelector("#searchTerm").value;
-
     term = term.trim();
-
     if (term.length < 1) return;
-
-    let searchURL = Pokemon_URL + term.toLowerCase() + "/"; 
-
-    ManualSearchData(term.toLowerCase());
-
+    manualSearchData(term.toLowerCase());
 }
 
-function ManualSearchData(e) {
+// Get the ur to get searched pokemon data
+function manualSearchData(e) {
     let xhr = new XMLHttpRequest();
     let url = Pokemon_URL + e + "/";
-    xhr.onload = CatchManualSearch;
+    xhr.onload = catchManualSearch;
     xhr.open("GET", url);
     xhr.send();
 }
 
-function CatchManualSearch(e) {
-
+// Display a pokemon that came as a result of a manual search
+function catchManualSearch(e) {
     if (e.target.responseText == "Not Found") {
         document.querySelector("#searchStatus").innerHTML = "<p>Nothing was found!<p/>";
         return;
@@ -126,33 +120,38 @@ function CatchManualSearch(e) {
 
     clearSearch();
     let obj = JSON.parse(e.target.responseText);
-    
-    
-    
+
     let searchSprite = document.querySelector("#searchMedia");
     let searchContent = document.querySelector("#searchDIV");
     let searchButton = document.querySelector("#catchButton");
-    
+    searchButton.addEventListener('click', catchFromSearch);
+
     let objName = obj.name;
-    let searchName = CapFirstLetter(objName);
+    let searchName = capFirstLetter(objName);
     let searchDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
     let searchID = obj.id;
+    caughtPokemon = searchName;
 
-    document.querySelector("#searchStatus").innerHTML = "<p>A wild "+ searchName +" appeared!<p/>";
+    document.querySelector("#searchStatus").innerHTML = "<p>A wild " + searchName + " appeared!<p/>";
 
     searchSprite.innerHTML = "<img src='" + searchDisplay + "' alt='" + searchName + " spirte'>";
     searchContent.innerHTML = "<span><p>" + searchName + "</p></span>";
     searchButton.setAttribute("value", searchID);
     searchButton.innerHTML = "<button>Catch!</button>";
-    searchButton.addEventListener('click', function() {
-        clearSearch();
-        AddPokemonToTeam(searchButton);   
-    } );
+    searchButton.addEventListener('click', catchFromSearch);
+}
+
+// Add a caught pokemon from manual search to the team
+function catchFromSearch(e) {
+    clearSearch();
+    document.querySelector("#searchStatus").innerHTML = "<p>Gotcha! " + caughtPokemon + " was caught!<p/>";
+    caughtPokemon = "";
+    addPokemonToTeam(e);
 }
 
 
 // Load three areas the user can click to encounter pokemon from that area
-function AreasLoaded(e) {
+function areasLoaded(e) {
     // Clear all the choices and the saved areas
     clearChoices();
     areaNums.length = 0;
@@ -189,7 +188,7 @@ function AreasLoaded(e) {
     displayAreas.forEach(area => {
 
         let areaName = obj.results[area].name;
-        let capsName = CapFirstLetter(areaName);
+        let capsName = capFirstLetter(areaName);
 
         choiceContent[addId].innerHTML = "<p>" + capsName + "</p>";
 
@@ -202,21 +201,21 @@ function AreasLoaded(e) {
 
     // Add the get encouter event lisnter for users to encount pokemon in a slected area
     document.querySelectorAll(".choiceButton").forEach(button => {
-        button.removeEventListener('click', GetAreas);
-        button.removeEventListener('click', AddPokemonToTeam);
-        button.addEventListener('click', GetEncounters);
+        button.removeEventListener('click', getAreas);
+        button.removeEventListener('click', addPokemonToTeam);
+        button.addEventListener('click', getEncounters);
     });
 
 }
 
 // Load three encounts the user can click on to add to their team (team adding to be implemented) 
-function EncounterLoad(e) {
+function encounterLoad(e) {
     clearChoices();
     let obj = JSON.parse(e.target.responseText);
 
     // Get the name of the area
     let objName = obj.name;
-    let capsName = CapFirstLetter(objName);
+    let capsName = capFirstLetter(objName);
 
     // Change function heading to show the selected area
     let encounteredHeading = "<h2>Wild Pokémon appeared in the " + capsName + "!</h2>";
@@ -249,10 +248,10 @@ function EncounterLoad(e) {
     displayPokemon.forEach(area => {
 
         let pokemonName = obj.pokemon_encounters[area].pokemon_species.name;
-        let capsName = CapFirstLetter(pokemonName);
+        let capsName = capFirstLetter(pokemonName);
 
 
-        let dexIndex = GetLastOfUrl(obj.pokemon_encounters[area].pokemon_species.url);
+        let dexIndex = getLastOfUrl(obj.pokemon_encounters[area].pokemon_species.url);
         let spriteUrl = encounterSprite_URL + dexIndex + ".gif";
 
         choiceSprite[addId].innerHTML = "<img src='" + spriteUrl + "' alt='" + capsName + " spirte'>";
@@ -264,14 +263,14 @@ function EncounterLoad(e) {
     });
 
     document.querySelectorAll(".choiceButton").forEach(button => {
-        button.removeEventListener('click', GetEncounters);
-        button.addEventListener('click', GetAreas);
-        button.addEventListener('click', AddPokemonToTeam);
+        button.removeEventListener('click', getEncounters);
+        button.addEventListener('click', getAreas);
+        button.addEventListener('click', addPokemonToTeam);
     });
 }
 
 // Get the end pf a url, used tp get sprite gif
-function GetLastOfUrl(url) {
+function getLastOfUrl(url) {
     url = url.split('/');
     url.pop();
     url = url.pop();
@@ -279,18 +278,24 @@ function GetLastOfUrl(url) {
 }
 
 // Add the pokemon to the current team
-function AddPokemonToTeam(e) {
-    let pokeIndex = e.currentTarget.attributes[2].value;
+function addPokemonToTeam(e) {
+    let pokeIndex = ""
+    if (!e.currentTarget) {
+        pokeIndex = e.attributes[2].value;
+    }
+    else {
+        pokeIndex = e.currentTarget.attributes[2].value;
+    }
+
     if (currentTeam.length < 6) {
 
         currentTeam.push(pokeIndex);
-        GetTeamMember(currentTeam[currentTeam.length - 1]);
+        getTeamMember(currentTeam[currentTeam.length - 1]);
 
     }
     else {
         document.querySelector("#teamStatus").innerHTML = "<p>Your team is already full!</p>";
     }
-
 }
 
 
@@ -314,6 +319,7 @@ function clearChoices() {
     });
 }
 
+// Clear infomation of the search section
 function clearSearch() {
     document.querySelector("#searchMedia").innerHTML = "";
     document.querySelector("#searchDIV").innerHTML = "";
@@ -322,18 +328,18 @@ function clearSearch() {
 
 // Get a pokemons name, dex mumber, weight, animated sprite, and an ability
 // This infomation is parsed so that it's displayed in a neat mannor 
-function LoadTeamPokemon(e) {
+function loadTeamPokemon(e) {
     let obj = JSON.parse(e.target.responseText);
     let objName = obj.name;
-    let pokemonName = CapFirstLetter(objName);
-    let pokemonWeight = obj.weight;
+    let pokemonName = capFirstLetter(objName);
+    let pokemonWeight = (obj.weight / 10);
+    let pokemonHeight = (obj.height * 10);
     let randomAbility = Math.floor((Math.random() * obj.abilities.length));
 
     let spriteDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
 
     // Get the pokemon id and diplay it how it is displayed in the offical pokedex
     let pokemonID = obj.id;
-    console.log(spriteDisplay);
     if (pokemonID < 100) {
         pokemonID = "0" + pokemonID;
         if (pokemonID < 10) {
@@ -347,49 +353,51 @@ function LoadTeamPokemon(e) {
     let pokemonAbility = obj.abilities[randomAbility].ability.name;
     pokemonAbility = pokemonAbility.split('-');
     if (pokemonAbility.length == 2) {
-        pokemonAbility = CapFirstLetter(pokemonAbility[0]) + " " + CapFirstLetter(pokemonAbility[1]);
+        pokemonAbility = capFirstLetter(pokemonAbility[0]) + " " + capFirstLetter(pokemonAbility[1]);
     }
     else {
-        pokemonAbility = CapFirstLetter(pokemonAbility[0]);
+        pokemonAbility = capFirstLetter(pokemonAbility[0]);
     }
 
     // Get the typing of pokemon (some have more than one type)
     let pokemonTypes = "";
-    pokemonTypes = CapFirstLetter(obj.types[0].type.name);
+    pokemonTypes = capFirstLetter(obj.types[0].type.name);
     if (obj.types.length == 2) {
-        pokemonTypes = pokemonTypes + " - " + CapFirstLetter(obj.types[1].type.name);
+        pokemonTypes = pokemonTypes + " - " + capFirstLetter(obj.types[1].type.name);
     }
-
-    console.log(nameID);
-    console.log(pokemonTypes);
-    console.log(pokemonAbility);
-    console.log(pokemonWeight);
 
     // Part of Sting that will be saved 
     let contentToAdd = "";
     contentToAdd += "<div class = 'teamMember' id='" + pokemonName + "'>";
     contentToAdd += "<img src='" + spriteDisplay + "' alt='" + pokemonName + " spirte'>";
     contentToAdd += "<span><p>";
-    contentToAdd += "</p>" + nameID + "<br>" + "Type: " + pokemonTypes + "<br>Ability: " + pokemonAbility + "<br>Weight: " + pokemonWeight + " lbs.";
+    contentToAdd += "</p>" + nameID + "<br>" + "Type: " + pokemonTypes + "<br>Ability: " + pokemonAbility + "<br>Weight: " + pokemonWeight + " kg Height: " + pokemonHeight + " cm";
     contentToAdd += "</p><a href='https://bulbapedia.bulbagarden.net/wiki/" + pokemonName + "_(Pokémon)'>Visit Bulbapedia for More Info!</a>"
     contentToAdd += "</span></div>";
     currentTeamHTML.push(contentToAdd);
-    LoadAllMembers();
-
+    loadAllMembers();
 }
 
-function LoadAllMembers() {
+// Load all the saved team members
+function loadAllMembers() {
     let allTeamContent = "";
     document.querySelector("#teamStatus").innerHTML = "<p>Team Status: " + (6 - currentTeam.length) + " slot(s) left on your team</p>";
     currentTeamHTML.forEach(teamMember => {
         allTeamContent += teamMember;
     });
     document.querySelector("#teamInfo").innerHTML = allTeamContent;
-
 }
 
 // Help method that capitalizes
-function CapFirstLetter(e) {
+function capFirstLetter(e) {
     let capWord = e.charAt(0).toUpperCase() + e.slice(1);
     return capWord;
+}
+
+// Release all the team pokemon, reseting the team display and arrays
+function releaseTeam(e) {
+    document.querySelector("#teamStatus").innerHTML = "<p>Team Status: Catch a Pokémon!</p>";
+    currentTeam.length = 0;
+    currentTeamHTML.length = 0;
+    document.querySelector("#teamInfo").innerHTML = "";
 }
