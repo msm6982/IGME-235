@@ -47,7 +47,7 @@ function loadSavedData() {
         currentTeam = savedTeam;
     }
     else {
-        document.querySelector("#teamStatus").innerHTML = "<p>Team Status: Catch a Pokémon!<p/>"
+        document.querySelector("#teamStatus").innerHTML = "<p>Team Status: Catch a Pokémon!</p>"
     }
 
     searchTerm.onchange = e => { localStorage.setItem(searchKey, e.target.value); };
@@ -107,18 +107,25 @@ function manualSearchData(e) {
     let xhr = new XMLHttpRequest();
     let url = Pokemon_URL + e + "/";
     xhr.onload = catchManualSearch;
+    xhr.onerror = faildTerm;
     xhr.open("GET", url);
     xhr.send();
 }
 
+// Do nothing if a term wasn't found
+function faildTerm(e) {
+
+}
+
 // Display a pokemon that came as a result of a manual search
 function catchManualSearch(e) {
+    clearSearch();
     if (e.target.responseText == "Not Found") {
-        document.querySelector("#searchStatus").innerHTML = "<p>Nothing was found!<p/>";
+        document.querySelector("#searchStatus").innerHTML = "<p>Nothing was found!</p>";
         return;
     }
 
-    clearSearch();
+
     let obj = JSON.parse(e.target.responseText);
 
     let searchSprite = document.querySelector("#searchMedia");
@@ -128,14 +135,22 @@ function catchManualSearch(e) {
 
     let objName = obj.name;
     let searchName = capFirstLetter(objName);
-    let searchDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
     let searchID = obj.id;
+    let searchDisplay = "";
+    if (searchID > 649) {
+        searchDisplay = obj.sprites.front_default;
+    }
+    else {
+        searchDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
+    }
+
+
     caughtPokemon = searchName;
 
-    document.querySelector("#searchStatus").innerHTML = "<p>A wild " + searchName + " appeared!<p/>";
+    document.querySelector("#searchStatus").innerHTML = "<p>A wild " + searchName + " appeared!</p>";
 
     searchSprite.innerHTML = "<img src='" + searchDisplay + "' alt='" + searchName + " spirte'>";
-    searchContent.innerHTML = "<span><p>" + searchName + "</p></span>";
+    searchContent.innerHTML = "<span><p><b>" + searchName + "</b></p></span>";
     searchButton.setAttribute("value", searchID);
     searchButton.innerHTML = "<button>Catch!</button>";
     searchButton.addEventListener('click', catchFromSearch);
@@ -144,7 +159,7 @@ function catchManualSearch(e) {
 // Add a caught pokemon from manual search to the team
 function catchFromSearch(e) {
     clearSearch();
-    document.querySelector("#searchStatus").innerHTML = "<p>Gotcha! " + caughtPokemon + " was caught!<p/>";
+    document.querySelector("#searchStatus").innerHTML = "<p>Gotcha! " + caughtPokemon + " was caught!</p>";
     caughtPokemon = "";
     addPokemonToTeam(e);
 }
@@ -179,6 +194,7 @@ function areasLoaded(e) {
 
     // get all the choices and divs
     let choiceContent = document.querySelectorAll(".choiceDIV");
+    let choiceIMG = document.querySelectorAll(".choiceMedia");
     let choiceButton = document.querySelectorAll(".choiceButton");
 
     // change the slection heading
@@ -190,8 +206,10 @@ function areasLoaded(e) {
         let areaName = obj.results[area].name;
         let capsName = capFirstLetter(areaName);
 
-        choiceContent[addId].innerHTML = "<p>" + capsName + "</p>";
+        choiceContent[addId].innerHTML = "<p><b>" + capsName + "</b></p>";
 
+        choiceIMG[addId].innerHTML = "<img src='images/" + areaName + ".png' alt='" + capsName + " Image'>";
+        //project2\images\pond.png
         choiceButton[addId].innerHTML = "<button>Explore Here!</button>";
 
         areaNums.push((area + 1));
@@ -255,7 +273,7 @@ function encounterLoad(e) {
         let spriteUrl = encounterSprite_URL + dexIndex + ".gif";
 
         choiceSprite[addId].innerHTML = "<img src='" + spriteUrl + "' alt='" + capsName + " spirte'>";
-        choiceContent[addId].innerHTML = "<span><p>" + capsName + "</p></span>";
+        choiceContent[addId].innerHTML = "<span><p><b>" + capsName + "</b></p></span>";
         choiceButton[addId].setAttribute("value", dexIndex);
         choiceButton[addId].innerHTML = "<button>Catch!</button>";
 
@@ -335,28 +353,40 @@ function loadTeamPokemon(e) {
     let pokemonWeight = (obj.weight / 10);
     let pokemonHeight = (obj.height * 10);
     let randomAbility = Math.floor((Math.random() * obj.abilities.length));
+    let pokemonID = obj.id;
+    let spriteDisplay = "";
+    if (pokemonID > 649) {
+        spriteDisplay = obj.sprites.front_default;
+    }
+    else {
+        spriteDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
+    }
 
-    let spriteDisplay = obj.sprites.versions['generation-v']['black-white'].animated.front_default;
 
     // Get the pokemon id and diplay it how it is displayed in the offical pokedex
-    let pokemonID = obj.id;
+
     if (pokemonID < 100) {
         pokemonID = "0" + pokemonID;
         if (pokemonID < 10) {
             pokemonID = "0" + pokemonID;
         }
     }
+
+
     pokemonID = "#" + pokemonID;
     let nameID = pokemonID + " " + pokemonName;
 
     // Get the ability of a pokemon and display it neatly
-    let pokemonAbility = obj.abilities[randomAbility].ability.name;
-    pokemonAbility = pokemonAbility.split('-');
-    if (pokemonAbility.length == 2) {
-        pokemonAbility = capFirstLetter(pokemonAbility[0]) + " " + capFirstLetter(pokemonAbility[1]);
-    }
-    else {
-        pokemonAbility = capFirstLetter(pokemonAbility[0]);
+    let pokemonAbility = "Not Yet Discovered!";
+    if (pokemonID < 808) {
+        pokemonAbility = obj.abilities[randomAbility].ability.name;
+        pokemonAbility = pokemonAbility.split('-');
+        if (pokemonAbility.length == 2) {
+            pokemonAbility = capFirstLetter(pokemonAbility[0]) + " " + capFirstLetter(pokemonAbility[1]);
+        }
+        else {
+            pokemonAbility = capFirstLetter(pokemonAbility[0]);
+        }
     }
 
     // Get the typing of pokemon (some have more than one type)
@@ -369,10 +399,11 @@ function loadTeamPokemon(e) {
     // Part of Sting that will be saved 
     let contentToAdd = "";
     contentToAdd += "<div class = 'teamMember' id='" + pokemonName + "'>";
-    contentToAdd += "<img src='" + spriteDisplay + "' alt='" + pokemonName + " spirte'>";
+    contentToAdd += "<div class = 'teamIMG'>"
+    contentToAdd += "<img src='" + spriteDisplay + "' alt='" + pokemonName + " spirte'></div>";
     contentToAdd += "<span><p>";
-    contentToAdd += "</p>" + nameID + "<br>" + "Type: " + pokemonTypes + "<br>Ability: " + pokemonAbility + "<br>Weight: " + pokemonWeight + " kg Height: " + pokemonHeight + " cm";
-    contentToAdd += "</p><a href='https://bulbapedia.bulbagarden.net/wiki/" + pokemonName + "_(Pokémon)'>Visit Bulbapedia for More Info!</a>"
+    contentToAdd += "<b>" + nameID + "</b><br>" + "Type: " + pokemonTypes + "<br>Ability: " + pokemonAbility + "<br>Weight: " + pokemonWeight + " kg Height: " + pokemonHeight + " cm";
+    contentToAdd += "</p><a href='https://bulbapedia.bulbagarden.net/wiki/" + pokemonName + "_(Pokémon)' target='_blank'>Visit Bulbapedia for More Info!</a>"
     contentToAdd += "</span></div>";
     currentTeamHTML.push(contentToAdd);
     loadAllMembers();

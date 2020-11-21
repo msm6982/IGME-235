@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Project 2</title>
+    <style>
+        body {
+            padding-right: 30vw;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>API used</h2>
+    <ul>
+        <li>https://pokeapi.co/docs/v2</li>
+    </ul>
+    <h2>Sources:</h2>
+    <ul>
+        <li>Pokemon Background Map: https://www.reddit.com/r/PokemonMaps/comments/e7jiz1/pokemon_world_map/</li>
+        <li>Pokemon Area Images: https://bulbapedia.bulbagarden.net/wiki/Location_preview</li>
+        <li>Pokemon Text Generator: https://textcraft.net/style/Textcraft/pokemon</li>
+        <li>Source Used for the odd HTML/CSS trick: https://www.w3schools.com/</li>
+        <li>Source Used for the odd Javascript trick: https://stackoverflow.com/</li>
+    </ul>
+    <h2>Orignal Proposal</h2>
+    <ul>
+        <li>
+            I'm planning on creating some sort of basic Pokemon team builder using Pokeapi. There is a lot of different
+            types of data that can be gathered from this API, ones that I'm partially interested in are methods that
+            find
+            Pokemon that can be found in a particular habitat, and data for the actual Pokemon themselves, which
+            includes
+            their sprite. So using this information I would want to create a basic user experience where a user can
+            click
+            one of three random habitats, and from that habitat the user can select one of three Pokemon that can be
+            found
+            in that habitat to be added to the user's current team. While the user is encountering Pokemon in different
+            habitats or when the user's team reaches a maximum of six the user can view their team more closely and view
+            specific attributes about their Pokemon, and from there the user can release all their caught Pokemon and
+            start
+            over if they choose to. This is my current scope but may down scale as I learn more about the API. The
+            target
+            audience will most likely be younger children or pokemon fans as that's the target audience for Pokemon
+        </li>
+    </ul>
+
+    <h2>Site Interative Design</h2>
+    <ul>
+        <li>
+            For this assignment I wanted to create an experience that was more than just a database presenter of key
+            terms, I wanted to make something more interactive.
+        </li>
+        <br>
+        <li>
+            That's when I discovered one of the endpoints had a list of generic habitats from those endpoints that would
+            lead to lists of all possible pokemon found in said generic habitat. This feature of the API was a perfect
+            fit for what I wanted to do for this project.
+        </li>
+        <br>
+        <li>
+            Programming the functionality of this site was fairly difficult as many of the endpoints had different
+            information from one another, so it required some awkward parsing and data storage of information so that
+            the experience would be cohesive and repeatable.
+        </li>
+        <br>
+        <li>
+            And despite my best efforts in factoring and parsing this information I felt like similare code had to be
+            repeated as there were many idiosyncrasies that I had to take into account of so that the experience worked
+            as intended.
+        </li>
+        <br>
+        <li>
+            Despite the struggles I'm proud of all the functionalities implemented into this site. Which Include:
+            Displaying 3 random areas where the player can choose to 'enter' one of the 3, Wild pokemon 'spawning' in
+            those areas which the player can catch and add to their team and it goes back to the area choice, a manual
+            search where players can search as add specific pokemon to their team, a team display showcasing detailed
+            information about each team member, and a release function where the user can clear their current team so
+            they can catch more than six pokemon (like in the base games)
+        </li>
+        <br>
+        <li>
+            Also because many functions require a lot of data to parse and load, it randomly seems like it take a while
+            to fully execute some functionalities
+        </li>
+        <br>
+        <li>
+            Based the CSS and HTML off of the GIF Finder Homework and past knowledge. And many of the site's functions
+            and visuals are based on the pokemon games. I did resort to outside source (listed above) for a few minor
+            problems but nothing too major
+        </li>
+        <br>
+        <li>
+            Lastly, It took me forever to get my project in a certicable prototype state since I was having emece
+            difficulties with the event handlers, partly due to my inexperience with Javascript and partially due to the
+            strange elements of the api. I was able to eventually put my prototype up for critique albeit late and I did
+            critique other group members in time. Once I overcame the challenges with the prototype the rest was
+            relatively straightforward.
+        </li>
+        <br>
+        <li>
+            So considering the strengths and weaknesses of my project and comparing it to the grade rubric requirements
+            I'd give myself around a mid A: 96, Not everything is perfect but what works works really well
+        </li>
+    </ul>
+</body>
+
+</html>

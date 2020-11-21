@@ -1,55 +1,170 @@
+*{
+    margin-left:  0;
+    margin-right: 0;
+    margin-bottom: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+
+
+#background1{
+    margin: 0;
+    padding-bottom: 1em;
+    background-image: url('../images/background.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+
 header img{
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+    padding-top: 2em;
+    padding-bottom: 1em;
 }
 
-header h2{
+#functionHeading{
     text-align: center;
 }
 
-#searchCatch{
+
+#searchCatch, #teamInfo{
     margin: 0 auto;
     width: 90%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+    row-gap: 1.5em;
 }
 
-.choices{
+.choices, #searchDisplay, .teamMember{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.choiceMedia{
-    width: 100px;
-    height: 100px;
+.choiceMedia, #searchMedia, #teamInfo .teamMember .teamIMG{
+    width: 25%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 1em;
+    padding-top: 1em;
 }
 
-.choices .choiceMedia img{
+.choices .choiceMedia img, #teamInfo .teamMember .teamIMG img{
     width: 100%;
-    max-height: 100%;
+    max-width: 100%;
+    transition: transform .5s ease;
 }
 
-
-
-#teamInfo{
-    margin: 0 auto;
-    width: 90%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+.choiceMedia:hover img, #searchMedia:hover img, .teamIMG:hover img{
+    transform: scale(1.5);
 }
 
-.teamMember{
+#searchButton{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 
-#teamInfo .teamMember img{
-    width: 75px;
+#functionHeading, #searchButton, #teamDisplay h2{
+    padding-top: 2em;
+}
+
+#search{
+    margin: 0 1em;
+}
+
+#searchMedia img{
+    width: 30%;
+    max-width: 30%;
+    transition: transform .5s ease;
+}
+
+#teamInfo .teamMember a{
+    text-align: center;
+}
+
+#teamInfo .teamMember a:link, footer a:link{
+    color: blue;
+}
+  
+
+#teamInfo .teamMember a:visited, footer a:visited{
+    color: purple;
+}
+  
+
+#teamInfo .teamMember a:hover, footer a:hover{
+    color: green;
+}
+  
+
+#teamInfo .teamMember a:active, footer a:active{
+    color: red;
+}
+
+.controls button{
+    margin-top: .5em;
+    width: 125px;
+    height: 25px;
+    border-radius: 15px;
+    background-color: white;
+    color: black;
+    border: 2px solid #b61010;
+    transition-duration: 0.5s;
+}
+
+.controls button:hover{
+    color: white;
+    background-color: #b61010;
+}
+
+#releaseButton{
+    width: 250px;
+    height: 50px;
+    border-radius: 30px;
+    color: white;
+    background-color: #b61010;
+}
+
+#releaseButton:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid #b61010;
+}
+
+#releaseTeam{
+    padding: 2em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h2, #teamStatus p{
+    text-align: center;
+}
+
+#teamStatus p, #searchStatus p{
+    font-style: italic;
+}
+
+#searchTerm{
+    color: black;
+    font-weight: bold;
+}
+
+footer p{
+    color: black;
+    text-align: center;
+}
+
+footer a{
+    display:block;text-align:center
 }
