@@ -13,7 +13,8 @@ const sceneHeight = app.view.height;
 app.loader.
     add([
         "images/bat.png",
-        "images/batTemp.png"
+        "images/batTemp.png",
+        "images/background.png"
     ]);
 app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
 app.loader.onComplete.add(setup);
@@ -27,7 +28,7 @@ let keys = {};
 
 // game variables
 let startScene;
-let gameScene, bat, scoreLabel, lifeLabel, flapSound;
+let gameScene, bat, scoreLabel, lifeLabel, flapSound, background;
 let gameOverScene;
 let gameOverScoreLabel;
 
@@ -55,6 +56,8 @@ function setup() {
     gameOverScene.visible = false;
     stage.addChild(gameOverScene);
 
+    
+
     // #4 - Create labels for all 3 scenes
     createLabelsAndButtons();
 
@@ -65,6 +68,10 @@ function setup() {
     // #5 - Create Bat
     bat = new Bat();
     gameScene.addChild(bat);
+
+    background = new PIXI.TilingSprite(app.loader.resources["images/background.png"].texture,600,600);
+    background.position.set(0,0);
+    gameScene.addChild(background);
 
     // #6 - Load Sounds
     flapSound = new Howl({
@@ -187,6 +194,9 @@ function createLabelsAndButtons() {
     playAgainButton.on('pointerover', e => e.target.alpha = 0.7); // concise arrow function with no brackets
     playAgainButton.on('pointerout', e => e.currentTarget.alpha = 1.0); // ditto
     gameOverScene.addChild(playAgainButton);
+
+
+    
 }
 
 // Increase Score Count

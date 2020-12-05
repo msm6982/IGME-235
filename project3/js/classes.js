@@ -29,6 +29,7 @@ class Bat extends PIXI.Sprite {
         this.currentVelocity = { x: 0, y: 0 };
         this.acceleration = { x: 0, y: 0 };
         this.currentDircetion = { x: 0, y: 0 };
+        this.rotation = 0;
         this.startFlapping = false;
         this.isAlive = true;
     }
@@ -128,16 +129,17 @@ class Bugs extends PIXI.Graphics {
 }
 
 class Owl extends PIXI.Graphics {
-    constructor(x = 0, y = 0) {
+    constructor(x = 0, y = 0, speed = 5) {
         super(app.loader.resources["images/Spaceship.png"].texture);
         this.anchor.set(.5, .5);
         this.scale.set(0.1);
         this.x = x;
         this.y = y;
+        this.speed = speed;
     }
 
     move(dt = 1 / 60) {
-        this.x += this.fwd.x * this.speed * dt;
-        this.y += this.fwd.y * this.speed * dt;
+        this.x += this.speed * dt;
+        this.y += this.speed * dt;
     }
 }
