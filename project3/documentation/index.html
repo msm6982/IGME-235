@@ -4,24 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation Project 2</title>
+    <title>Documentation Project 3</title>
     <style>
         body {
             padding-right: 30vw;
+        }
+
+        li {
+            padding: .5em 0;
         }
     </style>
 </head>
 
 <body>
+    <h1>Night Flight Documentation</h1>
     <h2>Sources:</h2>
+    <h3>Sounds</h3>
     <ul>
-        <li>Wing Flapping Sound: https://freesound.org/people/AgentDD/sounds/246225/</li>
-        <li>Scrolling Background: https://opengameart.org/content/background-for-games-2</li>
+        <li>Wing Flapping: https://freesound.org/people/AgentDD/sounds/246225/</li>
+        <li>Owl Screeching: https://freesound.org/people/mark646/sounds/201642/</li>
+        <li>Owl Hooting: https://freesound.org/people/Breviceps/sounds/465697/</li>
+        <li>Background Music: https://soundimage.org/fantasywonder/ - The track titled puzzel game</li>
+
     </ul>
+    <h3>Art and Spritesheet</h3>
+    <ul>
+        <li>Scrolling Background: https://opengameart.org/content/background-for-games-2</li>
+        <li>Owl Spritesheet: https://opengameart.org/content/owl-and-raven-sprites</li>
+        <li>Bat Spritesheet: https://opengameart.org/node/26447</li>
+    </ul>
+
     <h2>Orignal Proposal Page</h2>
     <ul>
         <li>
             <a href="../proposal/index.html">Proposal Page</a>
+        </li>
+    </ul>
+    <h2>Interative Design</h2>
+    <ul>
+        <li>I designed this game to have a very 'pick up and play' type of game feel. Where it is easy to pick the game
+            up in a few seconds but may be challenging to aim for the higher scores, especially with the increased spawn
+            rate and speed of the obstacles at higher score levels. So adderaring to this pick up and play concept I
+            only included very simple controls and objectives
+        </li>
+        <li>
+            I came up with the theme of this game when thinking about how some bats flap their wings so much while
+            airborne that their movement almost seems unnatural or they are struggling to stay flying.
+        </li>
+        <li>
+            So considering that, I took a spin on it where what if they did 'really' have struggles with flying and a
+            natural nocturnal flying 'rival' to a bat is an owl, and I just kept building ideas entirely off of those
+            concepts
+        </li>
+        <li>
+            The gravity based flying gameplay was heavily based on Flappy Bird, Jetpack Joyride, Joust, and other games
+            with that sort of movement. Code implementation of this mechanic was based on vehicle movement I learned and
+            implemented in IGME 209.
+        </li>
+        <li>
+            The collectable flies movement and implementation was based on the circles from circle blaster as I liked
+            there random movement and thought their behavior would be good fit for an collectable insect
+        </li>
+        <li>
+            I focused entirely on gameplay implementations and relied on open source assets for visuals and sounds so
+            currently some art styles and theming many not match my visual theme in my original proposal of being tongue
+            and cheek.
+        </li>
+    </ul>
+    <h2>Known Errors</h2>
+    <ul>
+        <li>
+            As I've said I've entirely relied on open source art for the project so far and because of that some of the
+            character within the sprite sheets have a pretty large offset of dead space, meaning that hitboxes are a bit
+            unfair rn because they are based on the size of an individual cell of a sprite sprite sheet
+        </li>
+        <li>
+            I've had a bit of experience coding this type of gravity based movement but I am still familiarizing myself
+            with it. One of the biggest challenges with this type of movement is actually balancing the values of
+            movement. I tried to balance these values the best I can while maintaining the 'struggle to fly' game feel,
+            but as of now rapid mashing of the spaceboard is still required for precise movement which can feel
+            extremely uncomfortable for some.
+        </li>
+        <li>
+            No matter what animation speed I set the bat's animations to, 'flapping' still appears as though it happens
+            way too quickly. It's fitting since real life bats fly their wings fast, but it would probably be more
+            visually interesting to see this animation more clearly.
         </li>
     </ul>
 

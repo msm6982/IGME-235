@@ -1,21 +1,25 @@
-class Bat extends PIXI.Sprite {
-    constructor(x = 0, y = 0, flapAcceleration = 0.2, rotateSpeed = 3, maxSpeed = 50, gravityModifier = 30) {
-        super(app.loader.resources["images/batTemp.png"].texture);
+
+// Player controlled bat class
+class Bat extends PIXI.AnimatedSprite {
+    constructor(spriteSheet) {
+        super(spriteSheet);
         this.anchor.set(.5, .5);
-        this.scale.set(0.25);
-        this.maxSpeed = maxSpeed;
-        this.x = x;
-        this.y = y;
+        this.scale.set(2);
+        this.maxSpeed = 50;
+        this.x = 0;
+        this.y = 0;
         this.currentPosition = { x: 0, y: 0 };
         this.currentVelocity = { x: 0, y: 0 };
         this.acceleration = { x: 0, y: 0 };
         this.currentDircetion = { x: 0, y: 0 };
         this.rotation = 0;
-        this.flapAcceleration = flapAcceleration;
-        this.rotateSpeed = rotateSpeed;
-        this.gravityModifier = gravityModifier;
+        this.flapAcceleration = 0.2;
+        this.rotateSpeed = 3;
+        this.gravityModifier = 30;
         this.startFlapping = false;
         this.isAlive = true;
+
+        this.loop = true;
     }
 
     // Flap Wings only once
@@ -98,9 +102,10 @@ class Bat extends PIXI.Sprite {
     }
 }
 
+// Collectable bug class
 // Based on circles form circle blasters
 class Bugs extends PIXI.Graphics {
-    constructor(sides = 5, color = 0xD3D3D3, x = 0, y = 0) {
+    constructor(sides = 5, color = 0xFFFF00, x = 0, y = 0) {
         super();
         this.beginFill(color);
         this.sides = sides;
@@ -128,18 +133,30 @@ class Bugs extends PIXI.Graphics {
     }
 }
 
-class Owl extends PIXI.Graphics {
-    constructor(x = 0, y = 0, speed = 5) {
-        super(app.loader.resources["images/Spaceship.png"].texture);
+
+// Obstical owl class
+class Owl extends PIXI.AnimatedSprite {
+    constructor(spriteSheet) {
+        super(spriteSheet);
         this.anchor.set(.5, .5);
-        this.scale.set(0.1);
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
+        this.scale.set(4);
+        this.x = 0;
+        this.y = 0;
+        this.speed = 5;
+        this.loop = true;
+        this.isAlive = true;
+        this.alreadyDamaged = false;
+        
+        this.play();
     }
 
+    // Bats fly to the left side of the screne and up if they damaged the bat
     move(dt = 1 / 60) {
-        this.x += this.speed * dt;
-        this.y += this.speed * dt;
+
+        this.x -= this.speed * dt;
+        this.animationSpeed = dt * 8;
+        if (this.alreadyDamaged) {
+            this.y -= this.speed * dt;
+        }
     }
 }

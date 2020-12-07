@@ -14,7 +14,8 @@ app.loader.
     add([
         "images/bat.png",
         "images/batTemp.png",
-        "images/background.png"
+        "images/background.png",
+        "images/owlEdit.png"
     ]);
 app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
 app.loader.onComplete.add(setup);
@@ -27,58 +28,90 @@ let stage;
 let keys = {};
 
 // game variables
+let backgroundMusic;
 let startScene;
-let gameScene, bat, scoreLabel, lifeLabel, flapSound, background;
+let gameScene, bat, scoreLabel, lifeLabel, flapSound, hootSound, screechSound, background, owlSpawnTimer;
 let gameOverScene;
 let gameOverScoreLabel;
 
-let trees = [];
+
+let playerSpriteSheet = [];
+let owlSpriteSheet = [];
 let owls = [];
 let bugs = [];
 let fruit = [];
 let score = 0;
+let level = 1;
 let life = 5;
+let bgX = 0;
+let bgSpeed = 10;
 let paused = true;
+let flapStart = false;
 
 function setup() {
     stage = app.stage;
-    // #1 - Create the `start` scene
+    // Create the `start` scene
     startScene = new PIXI.Container();
     stage.addChild(startScene);
 
-    // #2 - Create the main `game` scene and make it invisible
+    // Create the main `game` scene and make it invisible
     gameScene = new PIXI.Container();
     gameScene.visible = false;
     stage.addChild(gameScene);
 
-    // #3 - Create the `gameOver` scene and make it invisible
+    // Create the `gameOver` scene and make it invisible
     gameOverScene = new PIXI.Container();
     gameOverScene.visible = false;
     stage.addChild(gameOverScene);
 
-    
 
-    // #4 - Create labels for all 3 scenes
+    // Add Backgrounds
+    background = new PIXI.TilingSprite(app.loader.resources["images/background.png"].texture, 600, 600);
+    background.position.set(0, 0);
+    gameScene.addChild(background);
+
+    let startSceneBackground = new PIXI.TilingSprite(app.loader.resources["images/background.png"].texture, 600, 600);
+    startSceneBackground.position.set(0, 0);
+    startScene.addChild(startSceneBackground);
+
+    let gameOverbackground = new PIXI.TilingSprite(app.loader.resources["images/background.png"].texture, 600, 600);
+    gameOverbackground.position.set(0, 0);
+    gameOverScene.addChild(gameOverbackground);
+
+    // Load sprite sheet
+    createPlayerSpriteSheet();
+    createOwlSpriteSheet();
+
+    // Create Bat
+    bat = new Bat(playerSpriteSheet.Falling);
+    gameScene.addChild(bat);
+
+    // Create labels for all 3 scenes
     createLabelsAndButtons();
 
     // Control Event Handelers
     window.addEventListener("keydown", keyDown);
     window.addEventListener("keyup", keyRelease);
 
-    // #5 - Create Bat
-    bat = new Bat();
-    gameScene.addChild(bat);
-
-    background = new PIXI.TilingSprite(app.loader.resources["images/background.png"].texture,600,600);
-    background.position.set(0,0);
-    gameScene.addChild(background);
-
-    // #6 - Load Sounds
+    // Load Sounds
     flapSound = new Howl({
         src: ['sounds/wingFlap.wav']
     });
-    // #7 - Load sprite sheet
 
+    screechSound = new Howl({
+        src: ['sounds/owlScreech.mp3']
+    });
+
+    hootSound = new Howl({
+        src: ['sounds/owlHoot.mp3']
+    });
+
+    backgroundMusic = new Howl({
+        src: ['sounds/soundtrack.mp3'],
+        loop: true,
+        autoplay: true,
+        volume: 0.2
+    });
 
     // #8 - Start update loop
     app.ticker.add(gameLoop);
@@ -89,11 +122,41 @@ function setup() {
     // Clicking the button calls startGame()
 }
 
+// Load Sprite of the player bat sprite
+function createPlayerSpriteSheet() {
+    let spriteSheet = PIXI.BaseTexture.from(app.loader.resources["images/bat.png"].url);
+    let w = 32;
+    let h = 32;
+
+    playerSpriteSheet["Flap"] = [
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(2 * w, 0, w, h)),
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(3 * w, 0, w, h)),
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, 0, w, h))
+    ];
+    playerSpriteSheet["Falling"] = [
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(2 * w, 0, w, h))
+    ];
+}
+
+// Load Sprite of the owls 
+function createOwlSpriteSheet() {
+    let spriteSheet = PIXI.BaseTexture.from(app.loader.resources["images/owlEdit.png"].url);
+    let w = 16;
+    let h = 16;
+
+    owlSpriteSheet["Flying"] = [
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(0 * w, h * 3, w, h)),
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(1 * w, h * 3, w, h)),
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(2 * w, h * 3, w, h)),
+        new PIXI.Texture(spriteSheet, new PIXI.Rectangle(3 * w, h * 3, w, h)),
+    ];
+}
+
 function createLabelsAndButtons() {
     let buttonStyle = new PIXI.TextStyle({
-        fill: 0xFF0000,
+        fill: 0x573280,
         fontSize: 48,
-        fontFamily: "Futura"
+        fontFamily: "Arial"
     });
 
     // 1 - set up 'startScene'
@@ -102,33 +165,33 @@ function createLabelsAndButtons() {
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 96,
-        fontFamily: 'Futura',
-        stroke: 0xFF0000,
+        fontFamily: 'Arial',
+        stroke: 0x573280,
         strokeThickness: 6
     });
-    startLabel1.x = 50;
-    startLabel1.y = 120;
+    startLabel1.x = sceneWidth/2 - 230;
+    startLabel1.y = sceneHeight - 480;
     startScene.addChild(startLabel1);
 
     // 1B - make the middle start label
-    let startLabel2 = new PIXI.Text("For Nocturnals Only!");
+    let startLabel2 = new PIXI.Text("For Nocturnals Only");
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 32,
-        fontFamily: 'Futura',
+        fontFamily: 'Arial',
         fontStyle: 'italic',
-        stroke: 0xFF0000,
-        strokeThickness: 6
+        stroke: 0x573280,
+        strokeThickness: 3
     });
-    startLabel2.x = 185;
-    startLabel2.y = 300;
+    startLabel2.x = sceneWidth/2 - 130;
+    startLabel2.y = sceneHeight/2 - 50;
     startScene.addChild(startLabel2);
 
     // 1C - make the start game button
     let startButton = new PIXI.Text("Take Flight!");
     startButton.style = buttonStyle;
-    startButton.x = 80;
-    startButton.y = sceneHeight - 100;
+    startButton.x = sceneWidth/2 - 110;
+    startButton.y = sceneHeight/2 + 100;
     startButton.interactive = true;
     startButton.buttonMode = true;
     startButton.on("pointerup", startGame); // startGame is a function reference
@@ -140,8 +203,8 @@ function createLabelsAndButtons() {
     let textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 18,
-        fontFamily: 'Futura',
-        stroke: 0xFF0000,
+        fontFamily: 'Arial',
+        stroke: 0x573280,
         strokeThickness: 4
     })
 
@@ -164,12 +227,12 @@ function createLabelsAndButtons() {
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
-    let gameOverText = new PIXI.Text("Game Over!\n        :-O");
+    let gameOverText = new PIXI.Text("Game Over!");
     textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 64,
-        fontFamily: "Futura",
-        stroke: 0xFF0000,
+        fontFamily: "Arial",
+        stroke: 0x573280,
         strokeThickness: 6
     });
     gameOverText.style = textStyle;
@@ -184,7 +247,7 @@ function createLabelsAndButtons() {
     gameOverScene.addChild(gameOverScoreLabel);
 
     // 3B - make "play again?" button
-    let playAgainButton = new PIXI.Text("Play Again?");
+    let playAgainButton = new PIXI.Text("Keep Flying?");
     playAgainButton.style = buttonStyle;
     playAgainButton.x = 150;
     playAgainButton.y = sceneHeight - 100;
@@ -196,13 +259,19 @@ function createLabelsAndButtons() {
     gameOverScene.addChild(playAgainButton);
 
 
-    
+
 }
 
 // Increase Score Count
-// Gained by collecting bugs and eventually fruit
+// Gained by collecting bugs
+// Life and level is increased on reaching certain scores
 function increaseScoreBy(value) {
     score += value;
+
+    if (score == 15 || score == 30 || score == 45) {
+        level++;
+        life++; 
+    }
     scoreLabel.text = `Score   ${score}`;
 }
 
@@ -212,13 +281,11 @@ function decreaseLifeBy(value) {
     lifeLabel.text = `Life     ${life}`;
 }
 
-let flapStart = false;
-
 // Press and release Key functionality, press down
 function keyDown(e) {
-    // Dont do anything for space, flapping
+    // Dont do anything for space prevents the screne from scrolling, flapping
     if (e.key == " ") {
-
+        e.preventDefault();
     }
     else {
         keys[e.keyCode] = true;
@@ -233,36 +300,67 @@ function keyRelease(e) {
     keys[e.keyCode] = false;
 }
 
+// Reset necicary feilds once the gamescene starts 
 function startGame() {
     startScene.visible = false;
     gameOverScene.visible = false;
     gameScene.visible = true;
     score = 0;
+    level = 1;
     life = 5;
-    bat.resetLife(); // Doesn't work?
+    bat.resetLife();
     increaseScoreBy(0);
     decreaseLifeBy(0);
     bat.setPosition(sceneWidth / 2, sceneHeight / 2);
     paused = false;
-    createBugs(10);
+    owlSpawnTimer = 6;
+    createBugs(5);
+    bgX = 0;
+    bat.textures = playerSpriteSheet.Falling;
+    bat.play();
 }
 
 
 function gameLoop() {
 
+    // Keep track of delta time
     let dt = 1 / app.ticker.FPS;
     if (dt > 1 / 12) dt = 1 / 12;
+    bat.amimationSpeed = dt / 3;
 
     if (paused) { return; }
+
+    moveBackground(dt);
+
+    // Spawn and owl once a random time is matched
+    owlSpawnTimer -= 1 * dt
+    if (owlSpawnTimer <= 0) {
+        let nextSpawn = 6 - (level - 1);
+        CreateOwl();
+        owlSpawnTimer = getRandom(nextSpawn - 2, nextSpawn);
+    }
+
 
     KeepInBounds();
 
     // Move the bat
+    bat.amimationSpeed = dt * (1 / 3);
     bat.move(dt);
+
+    if (!bat.playing) {
+        bat.textures = playerSpriteSheet.Falling
+        bat.loop = true;
+        bat.play();
+    }
 
     // Move all the bugs
     for (let b of bugs) {
         b.move(dt);
+    }
+
+    // Move all owls
+    for (let o of owls) {
+        o.move(dt);
     }
 
     // Press D to rotate right
@@ -275,13 +373,19 @@ function gameLoop() {
         bat.rotateLeft(dt);
     }
 
-    // Press Space to flap winds once
+    // Press Space to flap wings once
     if (flapStart) {
         flapSound.play();
         bat.propelOnce();
         flapStart = false;
+
+        bat.textures = playerSpriteSheet.Flap
+        bat.loop = false;
+        bat.play();
+
     }
 
+    // Handle collision detections
     collisionDetection();
 
     // Create new bugs for each dead one
@@ -309,12 +413,28 @@ function gameLoop() {
 function collisionDetection() {
     // bugs and bat
     // Eat the bug and gain points!
+    // Owls also eat bugs
     for (let b of bugs) {
         if (b.isAlive & rectsIntersect(b, bat)) {
-            //hitSound.play();
             gameScene.removeChild(b);
             b.isAlive = false;
             increaseScoreBy(1);
+        }
+        for (let o of owls) {
+            if (b.isAlive & rectsIntersect(b, o)) {
+                gameScene.removeChild(b);
+                b.isAlive = false;
+            }
+        }
+    }
+
+    // Owls damage the bat on contact and fly away
+    for (let o of owls) {
+        if (o.alreadyDamaged == false & rectsIntersect(o, bat)) {
+            o.alreadyDamaged = true;
+            o.speed *= 1.5;
+            decreaseLifeBy(1);
+            screechSound.play();
         }
     }
 
@@ -322,6 +442,7 @@ function collisionDetection() {
 
 
 // Keep all objects in bounds
+// Add specific behavior for objects relating to the screne bounds
 function KeepInBounds() {
     // Keep the bat in bounds of screne
     let w1 = bat.width / 2;
@@ -341,35 +462,71 @@ function KeepInBounds() {
         bat.setPosition(bat.x, h1);
     }
 
-    // Keep bugs in bounds
+    // "Kill" bugs that go out of bounds, they fly away ;)
+    // If they hit the ground refelect off it
     for (let b of bugs) {
-        if (b.x <= b.sides / 2 || b.x >= sceneWidth - b.sides / 2) {
-            b.reflectX();
+        if (b.x < b.sides / 2 || b.x > sceneWidth - b.sides / 2 || b.y < b.sides / 2) {
+            b.isAlive = false;
+            gameScene.removeChild(b);
         }
 
-        if (b.y <= b.sides / 2 || b.y >= sceneHeight - b.sides / 2) {
+        if (b.y > sceneHeight - b.sides / 2) {
             b.reflectY();
         }
     }
+
+    // "Kill" owls that go out of bounds on the left side of the screen, they fly away ;)
+    for (let o of owls) {
+        if (o.x < (- o.width / 2) || o.y < (- o.height / 2)) {
+            o.isAlive = false;
+            gameScene.removeChild(o);
+        }
+    }
+    owls = owls.filter(o => o.isAlive);
 }
 
+// End the game and display the final score
 function gameEnd() {
     paused = true;
-    bugs.forEach(c => gameScene.removeChild(c));
+    bugs.forEach(b => gameScene.removeChild(b));
     bugs = [];
+
+    owls.forEach(o => gameScene.removeChild(o));
+    owls = [];
 
     gameOverScene.visible = true;
     gameScene.visible = false;
     gameOverScoreLabel.text = `Final Score:  ${score}`;
 }
 
+// Create collectable bugs and add them to the bug list
 function createBugs(numBugs) {
     for (let i = 0; i < numBugs; i++) {
         let squareSides = 5;
-        let b = new Bugs(squareSides);
-        b.x = Math.random() * (sceneWidth) - squareSides;
-        b.y = Math.random() * (sceneHeight / 2) - squareSides;
+        let b = new Bugs();
+        b.x = getRandom(squareSides, sceneWidth - squareSides);
+        b.y = getRandom(squareSides, (sceneHeight / 1.5) - squareSides);
         bugs.push(b);
         gameScene.addChild(b);
     }
+}
+
+// Move the scrolling background
+function moveBackground(dt) {
+    bgX -= bgSpeed * dt
+    background.tilePosition.x = bgX;
+}
+
+// Create a new owl obstical
+// Set it's initial position off screen to the right at a random height
+function CreateOwl() {
+    let newOwl = new Owl(owlSpriteSheet.Flying);
+    newOwl.speed = (bgSpeed * 10) * (level / 2);
+    let w1 = newOwl.width / 2;
+    let h1 = newOwl.height / 2;
+    newOwl.x = sceneWidth + (w1 * 4);
+    newOwl.y = getRandom(h1 * 2, (sceneHeight / 1.5) - h1);
+    gameScene.addChild(newOwl);
+    hootSound.play();
+    owls.push(newOwl);
 }
