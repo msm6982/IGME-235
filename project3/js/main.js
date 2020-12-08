@@ -270,7 +270,9 @@ function increaseScoreBy(value) {
 
     if (score == 15 || score == 30 || score == 45) {
         level++;
-        life++; 
+        life++;
+        createBugs(1);
+        lifeLabel.text = `Life     ${life}`; 
     }
     scoreLabel.text = `Score   ${score}`;
 }

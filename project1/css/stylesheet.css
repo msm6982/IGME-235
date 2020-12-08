@@ -21,14 +21,14 @@
 
 
 .sections{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 2em;
+    padding-bottom: 2em;
 }
 
 .contentHeadings{
     font-size: 2.5rem;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
+    padding-top: 1em;
+    padding-bottom: 1em;
     
 }
 
@@ -45,14 +45,14 @@ h1, h2, .contentHeadings, .buttonWrapper{
 
 
 h1{
-    font-size: 3.1rem;  
-    padding-top: 1rem;
-    padding-bottom: .5rem; 
+    font-size: 4rem;  
+    padding-top: .5em;
+    padding-bottom: .5em; 
 }
 
 
 #tagline{
-    font-size: 1.1rem;
+    font-size: 1.6rem;
 }
 
 a{
@@ -60,6 +60,10 @@ a{
     font-size: 1.5rem;
 }
 
+iframe{
+
+    height: 100%;
+}
 
 #navButtons{
     display: grid;
@@ -67,12 +71,12 @@ a{
     grid-template-areas: 
     "project    aboutMe"
     "resume     contact";
-    padding-top: 2rem;
+    padding-top: 2em;
 
     grid-template-columns: repeat(2, 30vw);
     grid-template-rows: repeat(2, auto);
-    row-gap: .5rem;
-    column-gap: .5rem;
+    row-gap: .5em;
+    column-gap: .5em;
 
     justify-items: stretch;
     justify-content: center;
@@ -105,12 +109,13 @@ a{
     "visual4"     
     "project4";
 
+    row-gap: 4em;
     grid-template-columns: 80vw;
     grid-template-rows: repeat(8, auto);
 }
 
 .projects{
-    padding-top: 1rem;
+    padding-top: 1em;
 }
 
 .projectText{
@@ -131,7 +136,7 @@ a{
 
 #project1Visual, #project2Visual, #project3Visual, #project4Visual
 {
-    padding-top: 1rem;
+    padding-top: 1em;
 }
 
 #project1Visual{
@@ -143,7 +148,7 @@ a{
 }
 
 #gameLink{
-    margin-top: .75rem;
+    margin-top: .75em;
 }
 
 
@@ -189,6 +194,7 @@ a{
     "personalImage"
     "personalText";
 
+    row-gap: 2em;
     grid-template-columns: 80vw;
     grid-template-rows: auto auto;
 }
@@ -210,7 +216,7 @@ a{
 
 #resumeSection{
     background-color: #4C9494;
-    padding: 1rem 10vw;
+    padding: 1em 10vw;
     
 }
 
@@ -219,6 +225,7 @@ a{
     grid-template-areas: 
     "resume"
     "downloadLink";
+    row-gap: 2em;
     grid-template-columns: 80vw;
     grid-template-rows: auto auto;
     align-items: center;
@@ -255,6 +262,7 @@ a{
     "phone"
     "email";
     grid-template-columns: 80vw;
+    row-gap: .5em;
     grid-template-rows: repeat(3, auto);
     justify-content: stretch;
     font-size: 1rem;
@@ -285,7 +293,7 @@ a:link{
     color: #D1D646;
 } 
 a:visited{
-    color: #f97068;
+    color: #D1D646;
 }
 
 a:focus{
@@ -312,14 +320,14 @@ a:active{
     }
 
     .sections{
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+        padding-top: 2em;
+        padding-bottom: 2em;
     }
     
     .contentHeadings{
         font-size: 2.5rem;
-        padding-top: 1rem;
-        padding-bottom: 2rem;
+        padding-top: 1em;
+        padding-bottom: 2em;
         
     }
 
@@ -344,14 +352,14 @@ a:active{
         display: grid;
         grid-template-areas: 
         "project1   visual1"
-        "visual2    project2"
+        "project2   visual2"
         "project3   visual3"
-        "visual4    project4";
+        "project4   visual4";
     
         grid-template-columns: 30vw 30vw;
         grid-template-rows: repeat(4, auto);
-        row-gap: 1.5rem;
-        column-gap: .5rem;
+        row-gap: 10em;
+        column-gap: .5em;
         justify-content: center;
         align-items: center;
     }
@@ -417,7 +425,7 @@ a:active{
     }
     
     #resumeButton{
-        margin-top: 1rem;
+        margin-top: 1em;
         padding: 0 16vw;
         
     }
